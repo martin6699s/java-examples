@@ -16,7 +16,6 @@ public class NioServer {
 
     private static final int BUF_SIZE=1024; // buf size 长度
 
-   /* main 方法 */
     public static void main(String[] args) {
         selector();
     }
@@ -28,7 +27,7 @@ public class NioServer {
         ServerSocketChannel ssc = null;
 
         try {
-            ssc = ServerSocketChannel.open(); // 通过静态方法创建ServerSocketChannel实例，ServerSocketChannel实例用来接受链接请求，相当于ServerSocket;而SocketChannel相当于Socket
+            ssc = ServerSocketChannel.open();
             selector = Selector.open();
 
             ssc.configureBlocking(false);
@@ -39,8 +38,8 @@ public class NioServer {
             ssc.register(selector, SelectionKey.OP_ACCEPT);
 
             while (true) {
-                if (selector.select(TIMEOUT) == 0) {
-                    System.out.println("==");
+                if (selector.select(TIMEOUT) == 0) { // select()方法返回整数，代表有多少个channel处于就绪，select(TIMEOUT)代表在没超出TIMEOUT时间里有多少channel处于就绪
+                    System.out.print(".");
                     continue;
                 }
 
@@ -96,16 +95,16 @@ public class NioServer {
 
     public static void handleAccept(SelectionKey key) throws IOException {
         ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
-        Selector selector = key.selector();
         SocketChannel sc = ssc.accept();
         sc.configureBlocking(false);
-        sc.register(selector, SelectionKey.OP_READ, ByteBuffer.allocateDirect(BUF_SIZE));
+        sc.register(key.selector(), SelectionKey.OP_READ, ByteBuffer.allocateDirect(BUF_SIZE));
     }
 
     public static void handleRead(SelectionKey key) throws IOException {
         SocketChannel sc = (SocketChannel) key.channel();
 
         ByteBuffer buf = (ByteBuffer) key.attachment();
+
 
 
         int readLength = sc.read(buf) ;
@@ -115,8 +114,10 @@ public class NioServer {
             buf.flip();
 
             while (buf.hasRemaining()){
-                System.out.println((char) buf.get());
+                System.out.print((char) buf.get());
             }
+
+            System.out.println();
 
             buf.clear();
             readLength = sc.read(buf);
@@ -132,6 +133,8 @@ public class NioServer {
 
         ByteBuffer buf = (ByteBuffer) key.attachment();
 
+        buf.put("hellldlsdsdsdsd".getBytes());
+
         buf.flip();
 
         SocketChannel sc = (SocketChannel) key.channel();
@@ -139,6 +142,10 @@ public class NioServer {
         while (buf.hasRemaining()) {
             sc.write(buf);
         }
+
+        System.out.println("sc.write is correct");
+
+        sc.close();
 
         buf.compact(); // 把未操作的数据加到buf的最前边
 
