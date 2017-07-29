@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+	<fontFamily name="KAIU">
+		<normal><![CDATA[kaiu.ttf]]></normal>
+		<bold><![CDATA[kaiu.ttf]]></bold>
+		<italic><![CDATA[kaiu.ttf]]></italic>
+		<boldItalic><![CDATA[kaiu.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'Kaiu', 'Kaiu', Helvetica, sans-serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'Kaiu', 'Kaiu', Helvetica, sans-serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+
+	<fontFamily name="MingLiU">
+		<normal><![CDATA[mingliu.ttf]]></normal>
+		<bold><![CDATA[mingliu.ttf]]></bold>
+		<italic><![CDATA[mingliu.ttf]]></italic>
+		<boldItalic><![CDATA[mingliu.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'MingLiU', 'MingLiU', Times, serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'MingLiU', 'MingLiU', Times, serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+
+	<fontFamily name="Arial">
+		<normal><![CDATA[arial.ttf]]></normal>
+		<bold><![CDATA[arialbd.ttf]]></bold>
+		<italic><![CDATA[ariali.ttf]]></italic>
+		<boldItalic><![CDATA[arialbi.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'Arial', 'Arial', Helvetica, sans-serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'Arial', 'Arial', Helvetica, sans-serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+	
+	<fontFamily name="Microsoft JhengHei">
+	   <normal><![CDATA[msjh.ttf]]></normal>
+       <bold><![CDATA[msjhbd.ttf]]></bold>
+       <italic><![CDATA[msjh.ttf]]></italic>
+       <boldItalic><![CDATA[msjhbd.ttf]]></boldItalic>
+       <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'Microsoft JhengHei', 'Microsoft JhengHei', Helvetica, sans-serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'Microsoft JhengHei', 'Microsoft JhengHei', Helvetica, sans-serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+	
+	<fontFamily name="宋体">
+	   <normal><![CDATA[simsun.ttf]]></normal>
+       <bold><![CDATA[simsun.ttf]]></bold>
+       <italic><![CDATA[simsun.ttf]]></italic>
+       <boldItalic><![CDATA[simsun.ttf]]></boldItalic>
+       <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'宋体', Arial, Helvetica, sans-serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'宋体', Arial, Helvetica, sans-serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+	
+	
+</fontFamilies>

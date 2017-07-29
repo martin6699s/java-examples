@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ireport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="feb1eba1-ae52-4657-89b9-7d7416e2cb84">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="11"/>
+	<property name="ireport.y" value="80"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFEFEF"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<subDataset name="Table Dataset 1" uuid="aad32396-03ab-4928-9ec3-23eacdd1a15b"/>
+	<subDataset name="dataset1" uuid="3dab9992-e832-4883-be2e-f064128b233d"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="gender" class="java.lang.String"/>
+	<parameter name="age" class="java.lang.String"/>
+	<parameter name="titleId" class="java.lang.String"/>
+	<parameter name="time" class="java.lang.String"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="SUBREPORT" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="specification" class="java.lang.String"/>
+	<field name="id" class="java.lang.String"/>
+	<field name="skill" class="java.lang.String"/>
+	<field name="data" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="199" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="43" width="37" height="20" uuid="0def24cb-2f46-4f63-996c-97cd8355f851"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[名字：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="63" width="37" height="20" uuid="6bcb33e5-d6c7-48c5-b58d-2b608fa1c599"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[姓名：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="83" width="37" height="20" uuid="6c738387-73f4-4a88-bc02-8e552078767a"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[性别：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="103" width="37" height="20" uuid="38a41085-9c02-40e2-8c08-44fe9447fdb9"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[说明：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="63" width="100" height="20" uuid="53b92651-dcb7-4b4c-b15d-d363e255f005"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="83" width="100" height="20" uuid="73999622-26cc-4e28-a92d-62a35b1ce4af"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{gender}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Opaque" x="49" y="103" width="470" height="20" uuid="0f3ffe19-4159-4c28-a666-2f97e84e8e95"/>
+				<textElement>
+					<font fontName="Arial Black" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{specification}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="1" y="140" width="554" height="1" uuid="50df74e4-523e-4c7b-973f-d0172d6120c5"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="3f969659-7033-4b5f-9c71-8e18c223b9b8"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="49" y="43" width="115" height="20" uuid="e0a58b9c-cff0-495e-9560-8fa71f93e0ae"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titleId}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="209" y="0" width="190" height="32" uuid="2df5b200-2aea-4106-b596-fbe6fec0e7be"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="12" y="154" width="100" height="20" uuid="c78be5cc-d542-4bbd-bb38-49be03457a4a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[特长：]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="52" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="0" width="52" height="14" uuid="08be7b5f-7434-4b6f-b9dc-6341b3fd8dde"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="14" width="250" height="14" forecolor="#000000" uuid="703608e0-2c2c-402a-8891-154ce1f57b8a"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="14" width="236" height="14" forecolor="#000000" uuid="46c0fa89-e30e-4d12-a276-5555ea5b815a"/>
+				<textElement textAlignment="Left">
+					<font fontName="Avenir Next Condensed"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{skill}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="12" y="32" width="533" height="1" forecolor="#E1DFDF" uuid="11397fed-8a63-40fd-bcfc-79dc30b6b68d"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="196" splitType="Stretch">
+			<staticText>
+				<reportElement x="209" y="97" width="89" height="15" uuid="ba377b2c-fb50-4239-90e1-fe22ba42ad4a"/>
+				<textElement>
+					<font fontName="Arial Black" size="9"/>
+				</textElement>
+				<text><![CDATA[注：测试测试。。。]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="0" width="554" height="1" forecolor="#666666" uuid="0b79db8b-151a-4bf9-a756-6e530ff91da0"/>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>
