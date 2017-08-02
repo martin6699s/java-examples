@@ -1,6 +1,8 @@
 package com.example.jaspersoft.service;
 
+import com.example.jaspersoft.concurrent.CreatePicTask;
 import com.example.jaspersoft.request.IReportReq;
+import com.example.jaspersoft.response.PicResp;
 
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -22,8 +24,10 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ForkJoinPool;
 
 import javax.imageio.ImageIO;
 
@@ -38,6 +42,25 @@ public class JasperService implements InitializingBean, DisposableBean {
     private String imagePath;
 
     private String tempPath = "/app/data/images";
+
+    public List<PicResp> concurrentCreatePic(List<IReportReq> iReportReqs){
+
+        if(iReportReqs.isEmpty()){
+            return null;
+        }
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+
+        CreatePicTask createPicTask = new CreatePicTask(iReportReqs);
+
+        List<PicResp> picRespList = forkJoinPool.invoke(createPicTask);
+
+        forkJoinPool.shutdown();
+
+        forkJoinPool = null;
+
+        return picRespList;
+
+    }
 
     public String createPic(IReportReq iReportReq) throws Exception {
         String DBPath = "";

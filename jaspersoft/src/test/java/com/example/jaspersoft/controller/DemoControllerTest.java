@@ -41,16 +41,14 @@ public class DemoControllerTest {
     private HttpMessageConverter<Object> mappingJackson2HttpMessageConverter;
 
     @Autowired
-    private PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver; // 提取分页参数解析器
+    private PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver;
+    // 提取分页参数解析器
 
     @Autowired
     private DemoController demoController;
 
     /**
      * 转为json字符串
-     * @param o
-     * @return
-     * @throws IOException
      */
     protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
@@ -66,28 +64,29 @@ public class DemoControllerTest {
                 pageableHandlerMethodArgumentResolver).build();
     }
 
-
     @Test
     public void generateImageTest() throws Exception {
 
-        IReportReq reportReq = generateIReport();
+        IReportReq reportReq1 = generateIReport();
+        IReportReq reportReq2 = generateIReport();
+        reportReq1.setTitle("个人简历.1");
+        reportReq2.setTitle("个人简历.2");
+        List<IReportReq> iReportReqs = new ArrayList<>();
+        iReportReqs.add(reportReq1);
+        iReportReqs.add(reportReq2);
 
         //expect
         MockHttpServletRequestBuilder storeRequest = post(baseUri);
-        String prescriptionJson = json(reportReq);
+        String prescriptionJson = json(iReportReqs);
         storeRequest.contentType(mediaTypeJson).content(prescriptionJson);
         mockMvc.perform(storeRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(mediaTypeJson))
                 .andReturn();
-
     }
 
-
-
-
-    private IReportReq generateIReport(){
+    private IReportReq generateIReport() {
         IReportReq iReportReq = new IReportReq();
         iReportReq.setTitle("个人简历");
         iReportReq.setAge("29");
@@ -119,6 +118,4 @@ public class DemoControllerTest {
 
         return iReportReq;
     }
-
-
 }
