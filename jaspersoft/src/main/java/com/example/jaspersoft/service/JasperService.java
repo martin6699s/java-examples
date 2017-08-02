@@ -43,6 +43,11 @@ public class JasperService implements InitializingBean, DisposableBean {
 
     private String tempPath = "/app/data/images";
 
+    /**
+     * fork/join invokAll 并发生成图片
+     * @param iReportReqs
+     * @return
+     */
     public List<PicResp> concurrentCreatePic(List<IReportReq> iReportReqs){
 
         if(iReportReqs.isEmpty()){
