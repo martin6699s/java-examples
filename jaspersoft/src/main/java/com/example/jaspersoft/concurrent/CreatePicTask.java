@@ -1,6 +1,7 @@
 package com.example.jaspersoft.concurrent;
 
 import com.example.jaspersoft.common.SpringTool;
+import com.example.jaspersoft.exception.JaspException;
 import com.example.jaspersoft.request.IReportReq;
 import com.example.jaspersoft.response.PicResp;
 import com.example.jaspersoft.service.JasperService;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveTask;
 
 /**
@@ -43,27 +45,38 @@ public class CreatePicTask extends RecursiveTask<List<PicResp>> {
             } catch (Exception e) {
                 logger.error("创建图片失败");
                 picResp.setUrl("");
+                throw new JaspException("生成图片失败"); // 在Task上可抛运行时异常；抛受检异常要自己处理，不能向上抛；
             } finally {
                     respList.add(picResp);
 
             }
         } else {
 
-            int firstFlag = listSize / 2;
-            List<IReportReq> reportReqList1 = splitReq(reportReqList,0, firstFlag);
-            List<IReportReq> reportReqList2 = splitReq(reportReqList,firstFlag,listSize);
+            try {
+                int firstFlag = listSize / 2;
+                List<IReportReq> reportReqList1 = splitReq(reportReqList,0, firstFlag);
+                List<IReportReq> reportReqList2 = splitReq(reportReqList,firstFlag,listSize);
 
-            CreatePicTask createPicTask1 = new CreatePicTask(reportReqList1);
-            CreatePicTask createPicTask2 = new CreatePicTask(reportReqList2);
+                CreatePicTask createPicTask1 = new CreatePicTask(reportReqList1);
+                CreatePicTask createPicTask2 = new CreatePicTask(reportReqList2);
 
-            invokeAll(createPicTask1,createPicTask2);
+                invokeAll(createPicTask1,createPicTask2);
 
-            List<PicResp> respList1 = createPicTask1.join();
-            List<PicResp> respList2 = createPicTask2.join();
+                List<PicResp> respList1 = createPicTask1.get();
+                List<PicResp> respList2 = createPicTask2.get();
 
-            respList.addAll(respList1);
-            respList.addAll(respList2);
+                respList.addAll(respList1);
+                respList.addAll(respList2);
 
+            } catch (InterruptedException e) {
+                logger.error("创建图片失败");
+                respList = null;
+                throw new JaspException("生成图片失败");
+            } catch (ExecutionException e) {
+                logger.error("创建图片失败");
+                respList = null;
+                throw new JaspException("生成图片失败");
+            }
         }
 
         return respList;

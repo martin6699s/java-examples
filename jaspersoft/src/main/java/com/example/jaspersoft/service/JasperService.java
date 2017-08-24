@@ -45,26 +45,38 @@ public class JasperService implements InitializingBean, DisposableBean {
 
     /**
      * fork/join invokAll 并发生成图片
-     * @param iReportReqs
-     * @return
      */
-    public List<PicResp> concurrentCreatePic(List<IReportReq> iReportReqs){
+    public List<PicResp> concurrentCreatePic(List<IReportReq> iReportReqs) {
 
-        if(iReportReqs.isEmpty()){
+        if (iReportReqs.isEmpty()) {
             return null;
         }
         ForkJoinPool forkJoinPool = new ForkJoinPool();
+        CreatePicTask createPicTask = null;
+        List<PicResp> picRespList = null;
+        try {
 
-        CreatePicTask createPicTask = new CreatePicTask(iReportReqs);
+            createPicTask = new CreatePicTask(iReportReqs);
 
-        List<PicResp> picRespList = forkJoinPool.invoke(createPicTask);
+            picRespList = forkJoinPool.invoke(createPicTask);
+        } catch (Exception e) {
+         // 如果在createPicTask抛出运行时异常 会在此捕获
+            
+        } finally {
+            if (createPicTask != null) {
+                if (createPicTask.isCompletedAbnormally()) {
+                    System.out.print("concurrentCreatePic:An exception has occured\n");
+                    System.out.printf("concurrentCreatePic:%s\n", createPicTask.getException());
+                    // 在此处可以做因异常情况生成图片失败的补偿措施，如把信息加入队列中 等待重新生成，或者加入数据表中，定时器固定扫表生成图片
+                }
+            }
 
-        forkJoinPool.shutdown();
+            forkJoinPool.shutdown();
 
-        forkJoinPool = null;
+            forkJoinPool = null;
+        }
 
         return picRespList;
-
     }
 
     public String createPic(IReportReq iReportReq) throws Exception {
@@ -75,7 +87,7 @@ public class JasperService implements InitializingBean, DisposableBean {
             //Parameters 会传输到jasper的对应parameter
             Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("title", iReportReq.getTitle());
-            parameters.put("titleId",iReportReq.getTitleId());
+            parameters.put("titleId", iReportReq.getTitleId());
             parameters.put("name", isNoneBlank(iReportReq.getName()) ? iReportReq.getName() : "");
             String gender = "";
             if (isNoneBlank(iReportReq.getGender())) {
@@ -91,7 +103,7 @@ public class JasperService implements InitializingBean, DisposableBean {
                     "time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(
                             null == iReportReq.getTime() ? new Date() : iReportReq.getTime()));
 
-            parameters.put("specification",iReportReq.getSpecification());
+            parameters.put("specification", iReportReq.getSpecification());
 
             //JRBeanCollectionDataSource(list),直接传到jasper的fields
             JasperPrint jasperPrint = JasperFillManager.fillReport(
@@ -115,15 +127,13 @@ public class JasperService implements InitializingBean, DisposableBean {
             exporter.exportReport();
             g.dispose();//释放资源信息
 
-
-            String path =  isNoneBlank(imagePath)? imagePath : tempPath;//文件路径
-
+            String path = isNoneBlank(imagePath) ? imagePath : tempPath;//文件路径
 
             Random rand = new Random();
             Integer fileName = rand.nextInt(1000);
             String pic = fileName.toString() + "dd.jpg";//图片生成名称
 
-            String fullname = path +"/" + pic;//完整路径名
+            String fullname = path + "/" + pic;//完整路径名
             DBPath = fullname;
             //创建文件夹
             File f = new File(path);
