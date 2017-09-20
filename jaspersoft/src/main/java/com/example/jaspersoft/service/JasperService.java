@@ -4,6 +4,7 @@ import com.example.jaspersoft.concurrent.CreatePicTask;
 import com.example.jaspersoft.request.IReportReq;
 import com.example.jaspersoft.response.PicResp;
 
+import net.coobird.thumbnailator.Thumbnails;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -54,14 +55,22 @@ public class JasperService implements InitializingBean, DisposableBean {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         CreatePicTask createPicTask = null;
         List<PicResp> picRespList = null;
+
+        String path = isNoneBlank(imagePath) ? imagePath : tempPath;//文件路径
+        //创建文件夹 把创建文件夹移到主方法上
+        File f = new File(path);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
         try {
 
             createPicTask = new CreatePicTask(iReportReqs);
-
+            // 如果涉及执行时间过长，可能影响性能或者死循环，可使用get(timeout,TimeUnit.SECONDS)设置超时时间
             picRespList = forkJoinPool.invoke(createPicTask);
         } catch (Exception e) {
          // 如果在createPicTask抛出运行时异常 会在此捕获
-            
+
         } finally {
             if (createPicTask != null) {
                 if (createPicTask.isCompletedAbnormally()) {
@@ -135,13 +144,16 @@ public class JasperService implements InitializingBean, DisposableBean {
 
             String fullname = path + "/" + pic;//完整路径名
             DBPath = fullname;
-            //创建文件夹
-            File f = new File(path);
-            if (!f.exists()) {
-                f.mkdirs();
-            }
+
             //这里的bufferedImage就是最终的影像图像信息,可以通过这个对象导入到cm中了.
-            ImageIO.write(bufferedImage, "JPEG", new File(fullname));
+           // ImageIO.write(bufferedImage, "JPEG", new File(fullname));
+
+            // 压缩尺寸 按比例缩放
+            int width = 600;
+            int height = 800;
+
+            // 使用第三方依赖压缩图片
+            Thumbnails.of(bufferedImage).size(width, height).keepAspectRatio(false).outputQuality(3.0f).toFile(fullname);
         } catch (Exception e) {
             throw new Exception("生成图片失败:  " + e.getMessage());
         } finally {
