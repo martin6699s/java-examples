@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Agent-Class: com.myagent.martin6699s.MyAgentmainAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Boot-Class-Path: javassist.jar

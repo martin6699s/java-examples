@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Premain-Class: com.myagent.martin6699s.MyPremainAgent
+Can-Redefine-Classes: true
+Boot-Class-Path: javassist.jar
