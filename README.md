@@ -7,3 +7,4 @@ java工具类
 4. sleep的同步
 5. 使用Fork/join并发生成图片
 6. tootKit为java类集合，含metadata提取、sftp工具、ssh工具等
+7. Instrumentation例子 premain方式和agentmain方式
